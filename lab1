@@ -77,11 +77,10 @@ while [ "$2" ]
     shift
     done
 ;;
--dip) 
-while [ "$2" ]
-    do sudo ip link set "$2" down
-    shift
-    done
+-dip) echo "enter ip: "
+read ip
+w=$(ifconfig -a | grep -B3 "$ip" | grep ":" | cut -f 1 -d ':')
+sudo ifconfig $w down
 ;;
 -ns) netstat -l ;;
 *) echo "$1 is not an option" ;;
