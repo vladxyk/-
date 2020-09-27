@@ -46,8 +46,8 @@ echo "EXAMPLES OF STARTING:
  -ip: ./lab1 -ip eth0 172.18.52.181
   -m: ./lab1 -m eth0 255.255.0.0
  -gw: ./lab1 -gw 172.18.52.176
-  -k: ./lab1 -k 8
--dip: ./lab1 -dip eth0
+  -k: ./lab1 -k 62602
+-dip: ./lab1 -dip 192.168.0.4
  -ns: ./lab1 -ns"
 ;;
 --help) echo "HELP" ;;
@@ -72,17 +72,14 @@ while [ "$2" ]
 sudo route add default gw "$2" ;;
 -kh) ps ux ;;
 -k)
-while [ "$2" ]
-    do kill -9 "$2"
-    shift
-    done
+a=$(netstat.exe -n -o | grep ":$2" | awk '{print $5}')
+taskkill.exe /PID $a /F
 ;;
--dip) echo "enter ip: "
-read ip
-w=$(ifconfig -a | grep -B3 "$ip" | grep ":" | cut -f 1 -d ':')
+-dip)
+w=$(ifconfig -a | grep -B3 "$2" | grep ":" | cut -f 1 -d ':')
 sudo ifconfig $w down
 ;;
--ns) netstat -l ;;
+-ns) netstat.exe -e ;;
 *) echo "$1 is not an option" ;;
 esac
 else
